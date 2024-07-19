@@ -23,12 +23,12 @@ public class MessageService {
     public Message getMessageById(int message_id) {
         return messageDAO.getMessageById(message_id);
     }
-    
+
     public List<Message> getAllMessagesByUserId(int account_id) {
         return messageDAO.getAllMessagesByUserId(account_id);
     }
 
-    public Message createNewMassage(Message msg){
+    public Message createNewMassage(Message msg) {
         return messageDAO.createNewMassage(msg);
     }
 

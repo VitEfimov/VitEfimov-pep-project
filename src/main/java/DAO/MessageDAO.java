@@ -90,7 +90,6 @@ public class MessageDAO {
         return null;
     }
 
-
     public Message deleteMessageById(int message_id) {
         Connection connection = ConnectionUtil.getConnection();
         try {
@@ -100,12 +99,12 @@ public class MessageDAO {
                 PreparedStatement ps = connection.prepareStatement(sql);
                 ps.setInt(1, message_id);
                 ps.executeUpdate();
-                return msg; 
-            } 
+                return msg;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null; 
+        return null;
     }
 
     public boolean updateMessage(int message_id, String message_text) {

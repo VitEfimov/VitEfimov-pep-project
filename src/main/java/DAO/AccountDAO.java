@@ -6,7 +6,7 @@ import Util.ConnectionUtil;
 
 public class AccountDAO {
 
-    private static boolean accountIsExist (Account account) {
+    private static boolean accountIsExist(Account account) {
         Connection connection = ConnectionUtil.getConnection();
         if (account.getPassword().length() >= 4 && !account.getUsername().isEmpty()) {
             try {

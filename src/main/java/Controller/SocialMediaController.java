@@ -25,92 +25,86 @@ public class SocialMediaController {
      *         controller.
      */
 
-     MessageService messageService = new MessageService();
-     AccountService accountService = new AccountService();
- 
-     public Javalin startAPI() {
-         Javalin app = Javalin.create();
-         app.post("register", this::userRegistration);
-         app.post("login", this::login);
-         app.post("messages", this::createNewMassage);
-         app.get("messages", this::getAllMessages);
-         app.get("messages/{message_id}", this::getMessageById);
-         app.delete("messages/{message_id}", this::deleteMessageById);
-         app.patch("messages/{message_id}", this::updateMessageById);
-         app.get("accounts/{account_id}/messages", this::getAllMessagesByUserId);
-          return app;
-     }
- 
-     private void userRegistration(Context ctx) throws JsonProcessingException{
-         ObjectMapper mapper = new ObjectMapper();
-         Account account = mapper.readValue(ctx.body(), Account.class);
-         if (account.getUsername() == null || account.getUsername().isEmpty() || account.getPassword().length() < 4) {
-             ctx.status(400);
-         } else {
-             Account registredAccount = accountService.userRegistration(account);
-             if (registredAccount != null) {
-                 ctx.json(mapper.writeValueAsString(registredAccount));
-                 ctx.status(200);
-             } else {
-                 ctx.status(400);
-             }
-         }
-     }
- 
-     private void login(Context ctx) throws JsonProcessingException{
-         ObjectMapper mapper = new ObjectMapper();
-         Account account = mapper.readValue(ctx.body(),Account.class);
-         Account loggedAccount = accountService.login(account);
-         if (loggedAccount != null) {
-             ctx.json(mapper.writeValueAsString(loggedAccount));
-             // ctx.status(200);
-         } else {
-             ctx.status(401);
-         }
-     }
- 
-     private void createNewMassage(Context ctx) throws JsonProcessingException {
-         ObjectMapper mapper = new ObjectMapper();
-         Message msg = mapper.readValue(ctx.body(), Message.class);
- 
-         if (msg.getMessage_text() == null || msg.getMessage_text().isEmpty() || msg.getMessage_text().length() > 255) {
-             ctx.status(400);
-          } else {
-             Message newMsg = messageService.createNewMassage(msg);
-             if (newMsg != null) {
-                 ctx.json(mapper.writeValueAsString(newMsg));
-                 ctx.status(200);
-                 // System.out.println("Message created successfully: " + newMsg);
- 
-             } else {
-                 ctx.status(400);
-             }
-         }
-     }
- 
-     private void getAllMessages(Context ctx) {
-         List<Message> messages = messageService.getAllMessages();
-         ctx.json(messages);
-     }
- 
-     private void getMessageById(Context ctx) throws JsonMappingException, JsonProcessingException {
-         int message_id = Integer.parseInt(ctx.pathParam("message_id"));
-         Message msg = messageService.getMessageById(message_id);
-         if (msg != null) {
-             ctx.json(msg);
-         } else {
-             ctx.status(200);
-         }
+    MessageService messageService = new MessageService();
+    AccountService accountService = new AccountService();
 
-     }
- 
-     private void deleteMessageById(Context ctx) {
+    public Javalin startAPI() {
+        Javalin app = Javalin.create();
+        app.post("register", this::userRegistration);
+        app.post("login", this::login);
+        app.post("messages", this::createNewMassage);
+        app.get("messages", this::getAllMessages);
+        app.get("messages/{message_id}", this::getMessageById);
+        app.delete("messages/{message_id}", this::deleteMessageById);
+        app.patch("messages/{message_id}", this::updateMessageById);
+        app.get("accounts/{account_id}/messages", this::getAllMessagesByUserId);
+        return app;
+    }
+
+    private void userRegistration(Context ctx) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Account account = mapper.readValue(ctx.body(), Account.class);
+        if (account.getUsername() == null || account.getUsername().isEmpty() || account.getPassword().length() < 4) {
+            ctx.status(400);
+        } else {
+            Account registredAccount = accountService.userRegistration(account);
+            if (registredAccount != null) {
+                ctx.json(mapper.writeValueAsString(registredAccount));
+            } else {
+                ctx.status(400);
+            }
+        }
+    }
+
+    private void login(Context ctx) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Account account = mapper.readValue(ctx.body(), Account.class);
+        Account loggedAccount = accountService.login(account);
+        if (loggedAccount != null) {
+            ctx.json(mapper.writeValueAsString(loggedAccount));
+        } else {
+            ctx.status(401);
+        }
+    }
+
+    private void createNewMassage(Context ctx) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        Message msg = mapper.readValue(ctx.body(), Message.class);
+        if (msg.getMessage_text() == null || msg.getMessage_text().isEmpty() || msg.getMessage_text().length() > 255) {
+            ctx.status(400);
+        } else {
+            Message newMsg = messageService.createNewMassage(msg);
+            if (newMsg != null) {
+                ctx.json(mapper.writeValueAsString(newMsg));
+            } else {
+                ctx.status(400);
+            }
+        }
+    }
+
+    private void getAllMessages(Context ctx) {
+        List<Message> messages = messageService.getAllMessages();
+        ctx.json(messages);
+    }
+
+    private void getMessageById(Context ctx) throws JsonMappingException, JsonProcessingException {
+        int message_id = Integer.parseInt(ctx.pathParam("message_id"));
+        Message msg = messageService.getMessageById(message_id);
+        if (msg != null) {
+            ctx.json(msg);
+        } else {
+            ctx.status(200);
+        }
+
+    }
+
+    private void deleteMessageById(Context ctx) {
         int message_id = Integer.parseInt(ctx.pathParam("message_id"));
         Message deletedMsg = messageService.deleteMessageById(message_id);
         if (deletedMsg != null) {
             ctx.json(deletedMsg);
         } else {
-            ctx.status(200); 
+            ctx.status(200);
         }
     }
 
@@ -119,7 +113,6 @@ public class SocialMediaController {
         Message msg = mapper.readValue(ctx.body(), Message.class);
         int message_id = Integer.parseInt(ctx.pathParam("message_id"));
         String newText = msg.getMessage_text();
-    
         if (newText == null || newText.isEmpty() || newText.length() > 255) {
             ctx.status(400);
         } else {
@@ -127,18 +120,15 @@ public class SocialMediaController {
             if (msgIsUpdated) {
                 Message updatedMsg = messageService.getMessageById(message_id);
                 ctx.json(updatedMsg);
-                ctx.status(200);
             } else {
                 ctx.status(400);
             }
-            
         }
     }
- 
-     private void getAllMessagesByUserId(Context ctx) throws JsonProcessingException{
-         int account_id = Integer.parseInt(ctx.pathParam("account_id"));
-         List<Message> messages = messageService.getAllMessagesByUserId(account_id);
-         ctx.json(messages);
-     }
 
+    private void getAllMessagesByUserId(Context ctx) throws JsonProcessingException {
+        int account_id = Integer.parseInt(ctx.pathParam("account_id"));
+        List<Message> messages = messageService.getAllMessagesByUserId(account_id);
+        ctx.json(messages);
+    }
 }
