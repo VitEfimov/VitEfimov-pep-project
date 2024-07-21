@@ -30,8 +30,8 @@ public class SocialMediaController {
 
     public Javalin startAPI() {
         Javalin app = Javalin.create();
-        app.post("register", this::userRegistration);
-        app.post("login", this::login);
+        app.post("register", this::signIn);
+        app.post("login", this::logIn);
         app.post("messages", this::createNewMassage);
         app.get("messages", this::getAllMessages);
         app.get("messages/{message_id}", this::getMessageById);
@@ -41,13 +41,13 @@ public class SocialMediaController {
         return app;
     }
 
-    private void userRegistration(Context ctx) throws JsonProcessingException {
+    private void signIn(Context ctx) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Account account = mapper.readValue(ctx.body(), Account.class);
         if (account.getUsername() == null || account.getUsername().isEmpty() || account.getPassword().length() < 4) {
             ctx.status(400);
         } else {
-            Account registredAccount = accountService.userRegistration(account);
+            Account registredAccount = accountService.signIn(account);
             if (registredAccount != null) {
                 ctx.json(mapper.writeValueAsString(registredAccount));
             } else {
@@ -56,10 +56,10 @@ public class SocialMediaController {
         }
     }
 
-    private void login(Context ctx) throws JsonProcessingException {
+    private void logIn(Context ctx) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Account account = mapper.readValue(ctx.body(), Account.class);
-        Account loggedAccount = accountService.login(account);
+        Account loggedAccount = accountService.logIn(account);
         if (loggedAccount != null) {
             ctx.json(mapper.writeValueAsString(loggedAccount));
         } else {

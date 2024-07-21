@@ -25,7 +25,7 @@ public class AccountDAO {
         return true;
     }
 
-    public Account userRegistration(Account account) {
+    public Account signIn (Account account) {
         Connection connection = ConnectionUtil.getConnection();
         if (accountIsExist(account)) {
             try {
@@ -47,7 +47,7 @@ public class AccountDAO {
         return null;
     }
 
-    public Account login(Account account) {
+    public Account logIn(Account account) {
         Connection connection = ConnectionUtil.getConnection();
         try {
             String sql = "select * from account where username = ? and password = ?";
