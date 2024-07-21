@@ -8,7 +8,7 @@ public class AccountDAO {
 
     private static boolean accountIsExist(Account account) {
         Connection connection = ConnectionUtil.getConnection();
-        if (account.getPassword().length() >= 4 && !account.getUsername().isEmpty()) {
+       
             try {
                 String sqlCheck = "select * from account where username = ?";
                 PreparedStatement psAccountIsExist = connection.prepareStatement(sqlCheck);
@@ -21,13 +21,13 @@ public class AccountDAO {
                 System.out.println(e.getMessage());
                 e.printStackTrace();
             }
-        }
+       
         return true;
     }
 
     public Account registerUser (Account account) {
         Connection connection = ConnectionUtil.getConnection();
-        if (accountIsExist(account)) {
+        if (account.getPassword().length() >= 4 && !account.getUsername().isEmpty() && accountIsExist(account)) {
             try {
                 String sql = "insert into account (username,password) values(?,?)";
                 PreparedStatement ps = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
