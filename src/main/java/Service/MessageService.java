@@ -16,20 +16,20 @@ public class MessageService {
         this.messageDAO = messageDAO;
     }
 
-    public List<Message> getAllMessages() {
-        return messageDAO.getAllMasseges();
+    public List<Message> getMessages() {
+        return messageDAO.getMessages();
     }
 
     public Message getMessageById(int message_id) {
         return messageDAO.getMessageById(message_id);
     }
 
-    public List<Message> getAllMessagesByUserId(int account_id) {
-        return messageDAO.getAllMessagesByUserId(account_id);
+    public List<Message> getMessagesByAccountId(int account_id) {
+        return messageDAO.getMessagesByAccountId(account_id);
     }
 
-    public Message createNewMassage(Message msg) {
-        return messageDAO.createNewMassage(msg);
+    public Message createMessage(Message msg) {
+        return messageDAO.createMessage(msg);
     }
 
     public Message deleteMessageById(int message_id) {

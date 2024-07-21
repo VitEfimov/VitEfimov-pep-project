@@ -7,7 +7,7 @@ import Util.ConnectionUtil;
 
 public class MessageDAO {
 
-    public List<Message> getAllMasseges() {
+    public List<Message> getMessages() {
         Connection connection = ConnectionUtil.getConnection();
         List<Message> messeges = new ArrayList<>();
         try {
@@ -48,7 +48,7 @@ public class MessageDAO {
         return null;
     }
 
-    public List<Message> getAllMessagesByUserId(int account_id) {
+    public List<Message> getMessagesByAccountId(int account_id) {
         Connection connection = ConnectionUtil.getConnection();
         List<Message> messeges = new ArrayList<>();
         try {
@@ -70,7 +70,7 @@ public class MessageDAO {
         return null;
     }
 
-    public Message createNewMassage(Message msg) {
+    public Message createMessage(Message msg) {
         Connection connection = ConnectionUtil.getConnection();
         try {
             String sql = "insert into message (posted_by,message_text,time_posted_epoch) values(?,?,?)";

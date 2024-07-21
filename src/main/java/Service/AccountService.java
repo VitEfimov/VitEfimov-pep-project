@@ -15,11 +15,11 @@ public class AccountService {
         this.accountDAO = accauntDAO;
     }
 
-    public Account signIn(Account account) {
-        return accountDAO.signIn(account);
+    public Account registerUser(Account account) {
+        return accountDAO.registerUser(account);
     }
 
-    public Account logIn(Account account) {
-        return accountDAO.logIn(account);
+    public Account loginUser(Account account) {
+        return accountDAO.loginUser(account);
     }
 }
